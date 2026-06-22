@@ -57,6 +57,12 @@ def open_session(config: dict, video_dir: str | None = None):
     os.makedirs(profile, exist_ok=True)
     kwargs = dict(headless=bool(rec["playwright"].get("headless", False)),
                   viewport={"width": int(vp["width"]), "height": int(vp["height"])})
+    # Optional browser channel (e.g. "msedge"/"chrome") — use a system-installed
+    # Chromium instead of the bundled one. Helpful on Windows where the bundled
+    # Chromium can hit side-by-side runtime issues.
+    channel = rec["playwright"].get("channel")
+    if channel:
+        kwargs["channel"] = channel
     if video_dir:
         os.makedirs(video_dir, exist_ok=True)
         kwargs["record_video_dir"] = video_dir

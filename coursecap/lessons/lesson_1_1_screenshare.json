@@ -1,0 +1,14 @@
+{
+  "lesson_id": "1.1",
+  "title": "Set Up Copilot and Your AI Fallback (screen-share, no audio)",
+  "mode": "screenshare",
+  "video": {"width": 1920, "height": 1080, "fps": 30},
+  "out": "runs/Lesson_1_1_screenshare.mp4",
+  "_note": "Visual-only walkthrough. Cuts clean segments from the raw takes (dropping dead time / interruptions) and concatenates: Excel beats then the browser fallback.",
+  "scenes": [
+    {"type": "clip", "clip": "runs/1_1_excel_full.mp4",
+     "segments": [[6, 26], [48, 70], [156, 186]]},
+    {"type": "clip", "clip": "runs/1_1_gemini.mp4",
+     "segments": [[3, 34]]}
+  ]
+}
