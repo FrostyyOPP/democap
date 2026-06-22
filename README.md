@@ -80,23 +80,36 @@ macOS 12.3+, Python 3.11+, Homebrew, FFmpeg, OBS Studio, Google Chrome.
 
 Everything else is Python packages installed into a local venv.
 
-## Setup
+## Setup — one command
+
+From a fresh clone (needs only system Python 3.11+ and a package manager —
+Homebrew on macOS, winget on Windows, apt/dnf/pacman on Linux):
 
 ```bash
-cd ~/democap
-python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
-.venv/bin/pip install -e .                 # exposes the `democap` command
-.venv/bin/python -m playwright install chromium   # browser engine (for Phase 5)
+python3 bootstrap.py
 ```
 
-### One-time macOS permissions (needed for Phase 5 recording)
+This **fully automates** the install: system deps (ffmpeg, OBS via the package
+manager), a project `.venv`, democap + all Python deps, and the Playwright
+Chromium browser. No manual download or config editing.
 
-1. **OBS WebSocket:** OBS → *Tools → WebSocket Server Settings → Enable Server*.
-   Note the **port** (default 4455) and set a **password**; put them in
-   `config/default.yaml` under `recording.obs`.
-2. **Screen Recording permission:** *System Settings → Privacy & Security →
-   Screen Recording* → enable **OBS** (and your terminal, if you run ffmpeg there).
+Then two commands finish OBS (also automated):
+
+```bash
+.venv/bin/democap setup-obs   # enable OBS WebSocket + create capture scenes via API
+.venv/bin/democap doctor      # verify ffmpeg, Playwright, OBS, and scenes are ready
+```
+
+> On Windows, use `.venv\Scripts\democap.exe` instead of `.venv/bin/democap`.
+
+`setup-obs` quits/relaunches OBS, writes the WebSocket config (with a generated
+password saved into `config/default.yaml`), and creates the `democap_clean` /
+`democap_chrome` capture scenes over the API — no clicking in OBS.
+
+**The one unavoidable manual step** (the OS protects it and it *cannot* be
+scripted): grant OBS the **Screen Recording** permission. `setup-obs` opens that
+settings pane for you; toggle OBS on, then quit & reopen OBS and run `democap
+doctor`.
 
 ## Usage
 

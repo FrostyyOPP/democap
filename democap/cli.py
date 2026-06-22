@@ -147,6 +147,95 @@ def run_lesson_cmd(
     typer.echo(f"  log: {log_path}")
 
 
+@app.command(name="setup-obs")
+def setup_obs(
+    keep_password: bool = typer.Option(False, "--keep-password",
+        help="Reuse the password already in config instead of generating a new one."),
+    config: Optional[Path] = typer.Option(None, "--config"),
+):
+    """Automatically enable OBS WebSocket and create the democap capture scenes.
+
+    Quits OBS, writes the WebSocket config (server on + password), relaunches OBS,
+    waits for it, then creates one clean app-window-capture scene per app in
+    config (`recording.obs.scenes`). The only manual step left is granting OBS the
+    OS screen-recording permission (it can't be scripted) — this opens that pane.
+    """
+    from . import config as cfg
+    from . import obs_setup
+    from .config import DEFAULT_CONFIG
+
+    conf = cfg.load_config(str(config) if config else None)
+    obs_cfg = conf["recording"]["obs"]
+    scenes = obs_cfg.get("scenes", {})
+    config_file = str(config) if config else str(DEFAULT_CONFIG)
+
+    typer.secho("Setting up OBS (this will quit & relaunch OBS)...", bold=True)
+    obs_setup.quit_obs()
+    if keep_password:
+        password = obs_cfg["password"]
+    else:
+        password = obs_setup.enable_websocket(port=obs_cfg["port"])
+        obs_setup.set_config_password(password, config_file)
+        typer.echo(f"  WebSocket enabled on port {obs_cfg['port']} (password saved to config)")
+    if keep_password:
+        obs_setup.enable_websocket(port=obs_cfg["port"], password=password)
+
+    obs_setup.launch_obs()
+    typer.echo("  launched OBS, waiting for WebSocket...")
+    if not obs_setup.wait_for_websocket(obs_cfg["port"]):
+        typer.secho("  WebSocket didn't come up. Is OBS installed? Launch it once, then re-run.", fg="red")
+        raise typer.Exit(1)
+
+    # reload config to pick up the new password for the API call
+    obs_cfg = cfg.load_config(config_file)["recording"]["obs"]
+    created = obs_setup.create_scenes(obs_cfg, scenes)
+    typer.secho(f"  created/verified scenes: {', '.join(created) or '(none configured)'}", fg="green")
+
+    typer.echo("")
+    typer.secho("One unavoidable manual step (OS security):", fg="yellow", bold=True)
+    typer.echo("  Grant OBS 'Screen & System Audio Recording' permission, then quit & reopen OBS.")
+    typer.echo("  Opening that settings pane now...")
+    obs_setup.open_screen_recording_settings()
+    typer.echo("\nThen verify with:  democap doctor")
+
+
+@app.command()
+def doctor(config: Optional[Path] = typer.Option(None, "--config")):
+    """Check that everything democap needs is installed and reachable."""
+    import shutil
+    from . import config as cfg
+    from . import obs_setup
+
+    ok = True
+    def check(label, good, hint=""):
+        nonlocal ok
+        ok = ok and good
+        typer.echo(f"  [{'✓' if good else '✗'}] {label}" + (f"  → {hint}" if not good and hint else ""))
+
+    typer.secho("democap doctor", bold=True)
+    check("ffmpeg on PATH", shutil.which("ffmpeg") is not None, "install ffmpeg (brew/winget)")
+    try:
+        import playwright  # noqa
+        check("playwright installed", True)
+    except Exception:
+        check("playwright installed", False, "pip install playwright && playwright install chromium")
+    conf = cfg.load_config(str(config) if config else None)
+    obs_cfg = conf["recording"]["obs"]
+    ws = obs_setup.wait_for_websocket(obs_cfg["port"], timeout=2)
+    check(f"OBS WebSocket on :{obs_cfg['port']}", ws, "run `democap setup-obs` and launch OBS")
+    if ws:
+        try:
+            import obsws_python as obs
+            c = obs.ReqClient(host=obs_cfg["host"], port=obs_cfg["port"], password=obs_cfg["password"], timeout=4)
+            have = {s["sceneName"] for s in c.get_scene_list().scenes}
+            for name in obs_cfg.get("scenes", {}):
+                check(f"OBS scene '{name}'", name in have, "run `democap setup-obs`")
+        except Exception as e:
+            check("OBS WebSocket auth", False, f"password mismatch? ({e})")
+    typer.secho("\nAll good — ready to record." if ok else "\nSome checks failed (see hints above).",
+                fg="green" if ok else "yellow")
+
+
 @app.command()
 def run(script: Path = typer.Argument(..., help="Path to the .docx demo script.")):
     """Execute and record a full course (built on run-lesson; WIP)."""

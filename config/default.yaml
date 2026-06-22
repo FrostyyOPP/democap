@@ -55,11 +55,22 @@ recording:
   obs:
     host: "localhost"
     port: 4455
-    password: ""    # OBS WebSocket password
+    password: ""    # OBS WebSocket password (auto-set by `democap setup-obs`)
     # Scene/source democap will create/use for clean WINDOW capture:
     scene: "democap_clean"
     source: "democap_window"
     capture_type: "window"          # window | crop  (never "display")
+    # Scenes auto-created by `democap setup-obs` (one clean app-window capture each).
+    # bundle_id is used on macOS, exe on Windows.
+    scenes:
+      democap_clean:
+        app: "Microsoft Excel"
+        bundle_id: "com.microsoft.Excel"
+        exe: "EXCEL.EXE"
+      democap_chrome:
+        app: "Google Chrome"
+        bundle_id: "com.google.Chrome"
+        exe: "chrome.exe"
 
   ffmpeg:
     # avfoundation crop-region fallback. Region in screen pixels.
