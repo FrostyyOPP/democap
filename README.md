@@ -123,8 +123,8 @@ democap analyze samples/sample_script.docx --json runs/steps.json
 # Non-interactive (no missing-tool prompts), e.g. for CI:
 democap analyze path/to/your_script.docx --no-prompt
 
-# Phase 4-5 (execute + record): scaffolded, not yet implemented.
-democap run samples/sample_script.docx
+# Record one lesson's browser steps into a clean MP4 (see "Record one lesson" below).
+democap run-lesson path/to/course.docx 1.1 --out runs/1_1.mp4
 ```
 
 ### Full multi-lesson courses
@@ -163,17 +163,19 @@ OBS desktop path. Browser recording follows `recording.browser.connect`:
 
 ### OBS scene setup (desktop + cdp recording)
 
-Create these scenes once in OBS (each = one **macOS Screen Capture** source set to
-**Window** capture, bound to the right app — *not* a display capture):
+**Automated** — `democap setup-obs` creates these scenes for you over the API (one
+clean app-window capture each, framed to the canvas):
 
 | Scene name (config key) | Captures |
 |---|---|
 | `democap_clean` (`recording.obs.scene`) | the **Excel** window |
 | `democap_chrome` (`recording.browser.obs_scene_chrome`) | the **Chrome** window |
 
-Then OBS → *Tools → WebSocket Server Settings* → Enable, and put the port/password
-in `recording.obs`. Window capture excludes overlays drawn by other apps, so the
-Claude control UI / orange border never appears in the recording.
+It also enables the OBS WebSocket and writes the generated password into
+`recording.obs`. Window capture excludes overlays drawn by other apps, so the Claude
+control UI / orange border never appears in the recording. (To add or change which
+apps are captured, edit `recording.obs.scenes` in `config/default.yaml` and re-run
+`democap setup-obs`.)
 
 `analyze` performs **no GUI actions and records nothing** — it's always safe to run.
 
