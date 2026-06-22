@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+runs/
+*.mp4
+*.webm
+.DS_Store
+.env
+# local browser profiles used for CDP / persistent-context recording
+.chrome-cdp/
+.chrome-profile/

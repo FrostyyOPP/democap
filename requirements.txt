@@ -1,0 +1,9 @@
+# Runtime dependencies for democap (Phase 1-3 MVP).
+# Install into the project venv:  .venv/bin/pip install -r requirements.txt
+python-docx>=1.1      # read .docx demo scripts
+playwright>=1.45      # clean browser automation + native video recording
+pydantic>=2.7         # structured, validated step/report models -> JSON
+typer>=0.12           # CLI (democap run ...)
+pyyaml>=6.0           # config + tool catalog files
+obsws-python>=1.7     # control OBS (window capture) over obs-websocket
+rich>=13.7            # readable readiness reports in the terminal

@@ -1,0 +1,25 @@
+[project]
+name = "democap"
+version = "0.1.0"
+description = "Local agentic workflow that turns a Word demo script into a clean MP4 demo recording on macOS."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "python-docx>=1.1",
+    "playwright>=1.45",
+    "pydantic>=2.7",
+    "typer>=0.12",
+    "pyyaml>=6.0",
+    "obsws-python>=1.7",
+    "rich>=13.7",
+]
+
+[project.scripts]
+democap = "democap.cli:app"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["democap*"]

@@ -1,0 +1,147 @@
+{
+  "title": "Google Sheets Quick Demo",
+  "source_file": "samples/sample_script.docx",
+  "required_tools": [
+    "google_chrome",
+    "google_sheets",
+    "excel"
+  ],
+  "steps": [
+    {
+      "index": 1,
+      "raw_text": "Step 1: Open Google Chrome.",
+      "action": "open",
+      "detail": "",
+      "target_tools": [
+        "google_chrome"
+      ],
+      "route": "browser",
+      "risky": false,
+      "notes": "",
+      "segment_type": "step",
+      "demo_needed": null,
+      "confidence": 0.0,
+      "classified_by": "",
+      "ambiguous": false,
+      "reason": ""
+    },
+    {
+      "index": 2,
+      "raw_text": "Step 2: Navigate to https://sheets.google.com",
+      "action": "navigate",
+      "detail": "https://sheets.google.com",
+      "target_tools": [
+        "google_sheets"
+      ],
+      "route": "browser",
+      "risky": false,
+      "notes": "",
+      "segment_type": "step",
+      "demo_needed": null,
+      "confidence": 0.0,
+      "classified_by": "",
+      "ambiguous": false,
+      "reason": ""
+    },
+    {
+      "index": 3,
+      "raw_text": "Step 3: Click \"Blank spreadsheet\" to create a new sheet.",
+      "action": "click",
+      "detail": "Blank spreadsheet",
+      "target_tools": [],
+      "route": "undecided",
+      "risky": false,
+      "notes": "",
+      "segment_type": "step",
+      "demo_needed": null,
+      "confidence": 0.0,
+      "classified_by": "",
+      "ambiguous": false,
+      "reason": ""
+    },
+    {
+      "index": 4,
+      "raw_text": "Step 4: Type \"Monthly Budget\" into cell A1.",
+      "action": "type",
+      "detail": "Monthly Budget",
+      "target_tools": [],
+      "route": "undecided",
+      "risky": false,
+      "notes": "",
+      "segment_type": "step",
+      "demo_needed": null,
+      "confidence": 0.0,
+      "classified_by": "",
+      "ambiguous": false,
+      "reason": ""
+    },
+    {
+      "index": 5,
+      "raw_text": "Step 5: Enter \"1500\" in cell B1.",
+      "action": "type",
+      "detail": "1500",
+      "target_tools": [],
+      "route": "undecided",
+      "risky": false,
+      "notes": "",
+      "segment_type": "step",
+      "demo_needed": null,
+      "confidence": 0.0,
+      "classified_by": "",
+      "ambiguous": false,
+      "reason": ""
+    },
+    {
+      "index": 6,
+      "raw_text": "Step 6: Verify the total updates automatically.",
+      "action": "verify",
+      "detail": "",
+      "target_tools": [],
+      "route": "narration",
+      "risky": false,
+      "notes": "",
+      "segment_type": "step",
+      "demo_needed": null,
+      "confidence": 0.0,
+      "classified_by": "",
+      "ambiguous": false,
+      "reason": ""
+    },
+    {
+      "index": 7,
+      "raw_text": "Step 7: Open Microsoft Excel to compare the desktop experience.",
+      "action": "open",
+      "detail": "",
+      "target_tools": [
+        "excel"
+      ],
+      "route": "browser",
+      "risky": false,
+      "notes": "",
+      "segment_type": "step",
+      "demo_needed": null,
+      "confidence": 0.0,
+      "classified_by": "",
+      "ambiguous": false,
+      "reason": ""
+    },
+    {
+      "index": 8,
+      "raw_text": "Step 8: Say a short closing summary about cloud vs desktop spreadsheets.",
+      "action": "say",
+      "detail": "",
+      "target_tools": [
+        "google_sheets"
+      ],
+      "route": "narration",
+      "risky": false,
+      "notes": "",
+      "segment_type": "step",
+      "demo_needed": null,
+      "confidence": 0.0,
+      "classified_by": "",
+      "ambiguous": false,
+      "reason": ""
+    }
+  ]
+}

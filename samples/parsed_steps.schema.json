@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DemoScript",
+  "description": "Structured representation of a demo recording script extracted from a .docx.",
+  "type": "object",
+  "required": ["title", "steps", "required_tools"],
+  "properties": {
+    "title": { "type": "string", "description": "Demo title (from doc heading or filename)." },
+    "source_file": { "type": "string" },
+    "required_tools": {
+      "type": "array",
+      "description": "Tool keys (from tools_catalog.yaml) inferred across all steps.",
+      "items": { "type": "string" }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["index", "raw_text", "action", "target_tools", "route"],
+        "properties": {
+          "index": { "type": "integer", "description": "1-based order." },
+          "raw_text": { "type": "string", "description": "Verbatim line from the script." },
+          "action": {
+            "type": "string",
+            "description": "Normalized verb.",
+            "enum": ["open", "navigate", "click", "type", "select", "scroll", "wait", "verify", "say", "other"]
+          },
+          "detail": { "type": "string", "description": "Action argument: URL, text to type, element, etc." },
+          "target_tools": {
+            "type": "array",
+            "description": "Tool keys this step touches.",
+            "items": { "type": "string" }
+          },
+          "route": {
+            "type": "string",
+            "description": "How democap will execute this step.",
+            "enum": ["browser", "desktop", "narration", "undecided"]
+          },
+          "risky": { "type": "boolean", "description": "Needs confirmation (destructive/ambiguous)." },
+          "notes": { "type": "string" },
+
+          "segment_type": {
+            "type": "string",
+            "description": "For video scripts: what this block is.",
+            "enum": ["meta", "voiceover", "direction", "prompt", "step"]
+          },
+          "demo_needed": {
+            "type": ["boolean", "null"],
+            "description": "Inferred from the voiceover: true=record a screen demo, false=narration only, null=n/a."
+          },
+          "confidence": { "type": "number", "description": "0..1 confidence in demo_needed." },
+          "classified_by": {
+            "type": "string",
+            "description": "Which engine decided.",
+            "enum": ["", "heuristic", "claude", "rule", "direction"]
+          },
+          "ambiguous": { "type": "boolean", "description": "Low confidence; good candidate for the Claude pass." },
+          "reason": { "type": "string", "description": "Short why, for the report." }
+        }
+      }
+    }
+  }
+}

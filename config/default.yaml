@@ -1,0 +1,79 @@
+# democap default configuration.
+# Copy/override per-project as needed. All paths may use ~ for home.
+
+project:
+  name: "democap"
+  output_dir: "~/democap/runs"      # timestamped run folders land here
+
+# ---- Routing: browser-first when a step can be done in a browser ----
+routing:
+  prefer_browser: true              # honor "browser path when practical"
+  # If a step needs a desktop-only app, we stop and ask (see readiness).
+
+# ---- Demo-intent classifier (video scripts) ----
+# For VOICEOVER-style scripts that don't label demos, democap reads each line and
+# decides whether a screen demo is needed.
+#   mode: auto      -> hybrid (heuristic + Claude) if ANTHROPIC_API_KEY is set,
+#                      else heuristic-only. No key needed for heuristic.
+#         heuristic -> rules only (free, offline)
+#         claude    -> Claude on every segment (needs key)
+#         hybrid    -> heuristic first, Claude resolves only ambiguous ones (needs key)
+classifier:
+  mode: "auto"
+  model: "claude-opus-4-8"
+
+# ---- Recording ----
+# Backends: "playwright" (browser, cleanest), "obs" (desktop window capture),
+#           "ffmpeg" (crop-region fallback). Orchestrator picks per-step:
+#   browser step  -> playwright
+#   desktop step  -> obs (falls back to ffmpeg if OBS unavailable)
+recording:
+  fps: 30
+  resolution: "1920x1080"           # target export size
+  # Never capture the full desktop if a window/region option exists.
+  forbid_fullscreen_capture: true
+
+  playwright:
+    # Native browser video = zero OS overlay in the stream.
+    viewport: { width: 1920, height: 1080 }
+    headless: false                 # headed so you can watch; video is still clean
+    record_video: true
+
+  # How democap gets a browser to drive, and how that browser is recorded:
+  #   connect: launch -> Playwright launches its own Chromium (uses a persistent
+  #                      profile dir so you sign in once); recorded via Playwright
+  #                      viewport video (cleanest, no OBS needed).
+  #            cdp    -> attach to your real Chrome over remote-debugging; reuses
+  #                      your logged-in session. Recorded via OBS window capture of
+  #                      the Chrome window (Playwright video can't record real Chrome).
+  browser:
+    connect: "cdp"                  # launch | cdp
+    cdp_url: "http://localhost:9222"
+    profile_dir: "~/democap/.chrome-profile"   # used when connect == launch
+    obs_scene_chrome: "democap_chrome"          # OBS scene for the Chrome window (cdp mode)
+
+  obs:
+    host: "localhost"
+    port: 4455
+    password: ""    # OBS WebSocket password
+    # Scene/source democap will create/use for clean WINDOW capture:
+    scene: "democap_clean"
+    source: "democap_window"
+    capture_type: "window"          # window | crop  (never "display")
+
+  ffmpeg:
+    # avfoundation crop-region fallback. Region in screen pixels.
+    crop: { x: 0, y: 0, width: 1920, height: 1080 }
+
+# ---- Export ----
+export:
+  container: "mp4"
+  video_codec: "libx264"
+  crf: 18                           # visually lossless-ish, good for course content
+  preset: "medium"
+  pixel_format: "yuv420p"           # max compatibility for course platforms
+
+# ---- Behavior ----
+behavior:
+  pause_on_risky_steps: true        # ask before destructive/ambiguous actions
+  log_each_action: true

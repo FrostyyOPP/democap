@@ -1,0 +1,122 @@
+# Tool catalog: how democap recognizes tools mentioned in a script, how it
+# detects them on the machine, and whether a browser alternative exists.
+#
+# classification:
+#   desktop_required  -> must be installed as a native app; no good browser path
+#   browser_capable   -> works in a browser (we prefer this when routing.prefer_browser)
+#   optional          -> nice-to-have; absence does not block a run
+#
+# detection (macOS):
+#   bundle_id  -> checked via mdfind / Spotlight metadata
+#   app_names  -> checked as /Applications/<name>.app (and /System/Applications)
+#   cli        -> checked on PATH (e.g. `code`)
+#
+# aliases: lowercased substrings that, if found in the script text, imply this tool.
+
+tools:
+  google_chrome:
+    classification: browser_capable
+    bundle_id: com.google.Chrome
+    app_names: ["Google Chrome"]
+    aliases: ["chrome", "google chrome"]
+    url: null
+
+  safari:
+    classification: browser_capable
+    bundle_id: com.apple.Safari
+    app_names: ["Safari"]
+    aliases: ["safari"]
+    url: null
+
+  excel:
+    classification: browser_capable      # desktop Excel installed, but Sheets/365 web exists
+    bundle_id: com.microsoft.Excel
+    app_names: ["Microsoft Excel"]
+    aliases: ["excel", "microsoft excel", "xlsx"]
+    url: "https://office.com"
+    browser_alt:
+      name: "Google Sheets"
+      url: "https://sheets.google.com"
+
+  word:
+    classification: browser_capable
+    bundle_id: com.microsoft.Word
+    app_names: ["Microsoft Word"]
+    aliases: ["microsoft word", "ms word", "word document", ".docx"]
+    url: "https://office.com"
+    browser_alt:
+      name: "Google Docs"
+      url: "https://docs.google.com"
+
+  powerpoint:
+    classification: browser_capable
+    bundle_id: com.microsoft.Powerpoint
+    app_names: ["Microsoft PowerPoint"]
+    aliases: ["powerpoint", "ppt", "pptx"]
+    url: "https://office.com"
+    browser_alt:
+      name: "Google Slides"
+      url: "https://slides.google.com"
+
+  google_sheets:
+    classification: browser_capable
+    bundle_id: null
+    app_names: []
+    aliases: ["google sheets", "sheets"]
+    url: "https://sheets.google.com"
+
+  google_docs:
+    classification: browser_capable
+    bundle_id: null
+    app_names: []
+    aliases: ["google docs", "gdocs"]
+    url: "https://docs.google.com"
+
+  canva:
+    classification: browser_capable
+    bundle_id: com.canva.CanvaDesktop
+    app_names: ["Canva"]
+    aliases: ["canva"]
+    url: "https://canva.com"
+    browser_alt:
+      name: "Canva (web)"
+      url: "https://canva.com"
+
+  copilot:
+    classification: browser_capable    # embedded in Excel/M365 desktop; also web
+    bundle_id: null
+    app_names: []
+    aliases: ["copilot", "microsoft copilot", "m365 copilot"]
+    url: "https://copilot.microsoft.com"
+    browser_alt:
+      name: "Microsoft Copilot (web)"
+      url: "https://copilot.microsoft.com"
+
+  gemini:
+    classification: browser_capable
+    bundle_id: null
+    app_names: []
+    aliases: ["gemini", "google gemini", "gemini.google.com"]
+    url: "https://gemini.google.com"
+
+  vscode:
+    classification: desktop_required
+    bundle_id: com.microsoft.VSCode
+    app_names: ["Visual Studio Code"]
+    cli: "code"
+    aliases: ["vs code", "vscode", "visual studio code"]
+    url: "https://code.visualstudio.com/"
+
+  finder:
+    classification: desktop_required
+    bundle_id: com.apple.finder
+    app_names: ["Finder"]
+    aliases: ["finder"]
+    url: null
+
+  terminal:
+    classification: desktop_required
+    bundle_id: com.apple.Terminal
+    app_names: ["Terminal"]
+    aliases: ["terminal", "command line", "shell"]
+    url: null
