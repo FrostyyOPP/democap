@@ -270,3 +270,11 @@ port is worth doing:
   detection; `os.startfile` launch; pywinauto / UI Automation for desktop execution;
   ffmpeg fallback swaps `avfoundation` → `gdigrab`/`ddagrab`. Select the platform
   layer via a factory keyed on `platform.system()`.
+
+---
+
+## Contributing
+
+PRs welcome — see **[CONTRIBUTING.md](CONTRIBUTING.md)** for dev setup, the codebase
+map, and conventions. The highest-value contribution right now is the **Windows
+port**: full guide and quick-start in **[docs/WINDOWS.md](docs/WINDOWS.md)**.
