@@ -55,7 +55,7 @@ recording:
   obs:
     host: "localhost"
     port: 4455
-    password: ""    # OBS WebSocket password (auto-set by `democap setup-obs`)
+    password: ""                    # set automatically by `democap setup-obs`
     # Scene/source democap will create/use for clean WINDOW capture:
     scene: "democap_clean"
     source: "democap_window"
