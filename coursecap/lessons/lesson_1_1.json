@@ -1,0 +1,23 @@
+{
+  "lesson_id": "1.1",
+  "title": "Set Up Copilot and Your AI Fallback",
+  "mode": "synced",
+  "video": {"width": 1920, "height": 1080, "fps": 30},
+  "voice_dir": "runs/vo",
+  "box_color": "red",
+  "box_thickness": 6,
+  "out": "runs/Lesson_1_1_full.mp4",
+  "_note": "Two apps in one lesson: an Excel screen clip AND a browser (Gemini) clip. The engine treats both identically.",
+  "scenes": [
+    {"type": "slide", "label": "Opening - Dana asks for a dashboard", "segs": [1, 2]},
+    {"type": "clip", "clip": "runs/1_1_excel_copilot_highlight.mp4", "segs": [3, 4, 5, 6, 7, 8],
+     "align": [[0, 7, 0, 11.889], [7, 9, 11.889, 18.530], [9, 16, 18.530, 27.772],
+               [16, 24, 27.772, 37.292], [24, 35, 37.292, 42.493]],
+     "boxes": [[1655, 98, 88, 95, 11.889, 18.530], [1495, 858, 378, 105, 27.772, 37.0]]},
+    {"type": "slide", "label": "No Copilot button - use Google Gemini", "segs": [9, 10]},
+    {"type": "clip", "clip": "runs/1_1_gemini.mp4", "segs": [11, 12],
+     "align": [[3.5, 14, 0, 8.0], [14, 16.5, 8.0, 11.006], [16.5, 24, 11.006, 17.926]],
+     "boxes": [[655, 500, 660, 82, 1.5, 6.0], [655, 962, 672, 78, 7.0, 10.8]]},
+    {"type": "slide", "label": "You have a helper - Up Next: 1.2", "segs": [13, 14, 15]}
+  ]
+}
