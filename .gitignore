@@ -10,3 +10,6 @@ runs/
 # local browser profiles used for CDP / persistent-context recording
 .chrome-cdp/
 .chrome-profile/
+
+# proprietary course content (never publish)
+course_business/
